@@ -12,19 +12,14 @@ from keras.layers import LSTM
 from keras.preprocessing import sequence
 
 """"
-TODO:
+Structure: 
+Basically just model compilation. This way we can create models in the experiment scripts. 
 
-- Validation & testing
-- Data augmentation (create more data to train on)
-- Tune preprocessing parameters (i.e. sample frequency)
-- Add data from other phases to the data sets
-- Feature selection (derivatives?)
+TODO
 - Tune model parameters (layers of LSTM)
-- 
+- Make different models so we can test them along each other
 
 """
-
-# Global parameters
 
 def compile_model():
     model = Sequential()

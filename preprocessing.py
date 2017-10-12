@@ -4,6 +4,20 @@ import numpy as np
 import random
 import sys
 
+"""
+Structure should be:
+
+*Most of the preprocessing is done outside of Pyhton now by Olaf, should we keep it like this?
+*We now only use the data from 1 phase (choosing between A and B) and not of the other parts of Mathot's experiment
+
+- Loading data (incl merging all 0 and 1 data)
+- Creating target data
+- Combining the merged 0 and 1 data with the right target data
+- How many features do we want to use? (pupil dilation, derivatives etc)
+- What should the sample frequency be? 
+- Data augmentation
+- Combining all these small functions in one final function that can be called by the experiments
+"""
 
 def compute_gradient(data):
     data = np.gradient(data)
