@@ -2,6 +2,7 @@ import sys
 import glob
 import random
 import numpy as np
+from preprocess_data import *
 from numpy import array
 from numpy import zeros, newaxis
 import keras
@@ -10,13 +11,20 @@ from keras.layers import Dense
 from keras.layers import LSTM
 from keras.preprocessing import sequence
 
+""""
+TODO:
 
-def format_data(data, min_round_len):
-    data = [sum(i, []) for i in data]
-    data = [map(float, i) for i in data]
-    data = [i[:min_round_len] for i in data]
-    return data
+- Validation & testing
+- Data augmentation (create more data to train on)
+- Tune preprocessing parameters (i.e. sample frequency)
+- Add data from other phases to the data sets
+- Feature selection (derivatives?)
+- Tune model parameters (layers of LSTM)
+- 
 
+"""
+
+# Global parameters
 
 def compile_model():
     model = Sequential()
@@ -24,18 +32,6 @@ def compile_model():
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
-
-
-def merge_data(a, b):
-    a = np.array(a)
-    b = np.array(b)
-    ab = np.array(a.tolist() + b.tolist())
-    return ab
-
-
-def create_target_data(len_0, len_1):
-    y = np.array(np.zeros(len_0).tolist() + np.ones(len_1).tolist())
-    return y
 
 
 def shuffle_train_data(x, y):
@@ -53,27 +49,8 @@ def reshape_data(x):
 if __name__ == "__main__":
     model = compile_model()
 
-    data_path = 'output'
-    files_0 = glob.glob(data_path + '/0/*.dat')
-    files_1 = glob.glob(data_path + '/1/*.dat')
-
-    if len(files_0) != len(files_1):
-        print('[WARNING]: Number of positive and negative files are not the same!')
-        sys.exit()
-
-    x_train = np.array([])
-    y_train = np.array([])
-
-    files = [val for pair in zip(files_0, files_1) for val in pair]
-    for i in xrange(0, len(files), 2):
-        d_0 = np.load(files[i])
-        d_1 = np.load(files[i + 1])
-
-        d_0 = format_data(d_0, 250)
-        d_1 = format_data(d_1, 250)
-
-        x_train = merge_data(x_train, merge_data(d_0, d_1))
-        y_train = merge_data(y_train, create_target_data(len(d_0), len(d_1)))
+    num_features = 2
+    x_train, y_train = preprocess_data(num_features)
 
     x_train, y_train = shuffle_train_data(x_train, y_train)
     x_train = reshape_data(x_train)
