@@ -21,9 +21,8 @@ TODO
 
 """
 
-
 N_FEATURES = 2
-INPUT_SIZE = 200
+INPUT_SIZE = 5000
 HIDDEN_UNITS = 100
 EPOCHS = 3
 BATCH_SIZE = 5
@@ -51,7 +50,7 @@ def reshape_data(x):
 if __name__ == "__main__":
     model = compile_model()
 
-    x_train, y_train = preprocess_data(N_FEATURES)
+    x_train, y_train = preprocess_data(N_FEATURES, INPUT_SIZE)
 
     x_train, y_train = shuffle_train_data(x_train, y_train)
     x_train = reshape_data(x_train)

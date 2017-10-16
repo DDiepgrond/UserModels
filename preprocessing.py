@@ -18,7 +18,6 @@ Structure should be:
 - Data augmentation
 - Combining all these small functions in one final function that can be called by the experiments
 """
-N_POINTS = 200
 DATA_PATH = 'output'
 
 def compute_gradient(data):
@@ -29,7 +28,7 @@ def compute_gradient(data):
 def format_data(data, min_round_len):
     data = [sum(i, []) for i in data]
     data = [map(float,i) for i in data]
-    data = [i[:min_round_len] if len(i) > N_POINTS else i + [0] * (N_POINTS - len(i)) for i in data]
+    data = [i[:min_round_len] if len(i) > min_round_len else i + [0] * (min_round_len - len(i)) for i in data]
     return data
 
 
@@ -44,8 +43,7 @@ def create_target_data(len_0, len_1):
     y = np.array(np.zeros(len_0).tolist() + np.ones(len_1).tolist())
     return y
 
-
-def preprocess_data(num_features):
+def preprocess_data(num_features, n_points):
     files_0 = glob.glob(DATA_PATH + '/0/*.dat')
     files_1 = glob.glob(DATA_PATH + '/1/*.dat')
 
@@ -60,9 +58,9 @@ def preprocess_data(num_features):
     for i in xrange(0, len(files), 2):
         d_0 = np.load(files[i])
         d_1 = np.load(files[i + 1])
-
-        d_0 = format_data(d_0, N_POINTS)
-        d_1 = format_data(d_1, N_POINTS)
+        
+        d_0 = format_data(d_0, n_points)
+        d_1 = format_data(d_1, n_points)
 
         if (num_features == 2):
             d_0_gradient = compute_gradient(d_0)
