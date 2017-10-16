@@ -64,12 +64,37 @@ def preprocess_data(num_features):
         d_0 = format_data(d_0, N_POINTS)
         d_1 = format_data(d_1, N_POINTS)
 
-        if (num_features == 2):
+        if (num_features >= 2):
             d_0_gradient = compute_gradient(d_0)
             d_1_gradient = compute_gradient(d_1)
 
             d_0 = np.stack((d_0, d_0_gradient[0]), axis=-1)
-            d_1 = np.stack((d_1, d_1_gradient[0]), axis=-1)  
+            d_1 = np.stack((d_1, d_1_gradient[0]), axis=-1)
+        
+        # if (num_features >= 3):
+        #     d_0_gradient = compute_gradient(d_0)
+        #     d_1_gradient = compute_gradient(d_1)
+          
+        #     d_0_diff = np.diff(d_0)
+        #     d_1_diff = np.diff(d_1)
+            
+        #     d_0_diff_shaped = np.zeros((len(d_0_diff), N_POINTS))
+        #     for i in range(len(d_0_diff)):
+        #         d_0_diff_shaped[i] = np.insert(d_0_diff[i], 0, np.nan)
+
+        #     d_1_diff_shaped = np.zeros((len(d_1_diff), N_POINTS))
+        #     for i in range(len(d_1_diff)):
+        #         d_1_diff_shaped[i] = np.insert(d_1_diff[i], 0, np.nan)
+
+        #     print(len(d_0_gradient[0][0]))
+        #     d_0 = np.stack((d_0, d_0_gradient[0]), axis=-1)
+        #     d_1 = np.stack((d_1, d_1_gradient[0]), axis=-1)
+            
+        #     print(d_0[0])
+        #     print(d_0_diff_shaped[0])
+           
+        #     d_0 = np.stack((d_0, d_0_diff_shaped), axis=-1)
+        #     d_1 = np.stack((d_1, d_1_diff_shaped), axis=-1)
 
         X = merge_data(X, merge_data(d_0, d_1))
         Y = merge_data(Y, create_target_data(len(d_0), len(d_1)))

@@ -2,7 +2,7 @@ import sys
 import glob
 import random
 import numpy as np
-from preprocess_data import *
+from preprocessing import *
 from numpy import array
 from numpy import zeros, newaxis
 import keras
@@ -54,6 +54,7 @@ if __name__ == "__main__":
     x_train, y_train = preprocess_data(N_FEATURES)
 
     x_train, y_train = shuffle_train_data(x_train, y_train)
+    print(x_train.shape)
     x_train = reshape_data(x_train)
 
     model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE)
