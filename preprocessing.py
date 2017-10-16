@@ -18,6 +18,8 @@ Structure should be:
 - Data augmentation
 - Combining all these small functions in one final function that can be called by the experiments
 """
+N_POINTS = 200
+DATA_PATH = 'output'
 
 def compute_gradient(data):
     data = np.gradient(data)
@@ -26,8 +28,8 @@ def compute_gradient(data):
 
 def format_data(data, min_round_len):
     data = [sum(i, []) for i in data]
-    data = [map(float, i) for i in data]
-    data = [i[:min_round_len] for i in data]
+    data = [map(float,i) for i in data]
+    data = [i[:min_round_len] if len(i) > N_POINTS else i + [0] * (N_POINTS - len(i)) for i in data]
     return data
 
 
@@ -44,9 +46,8 @@ def create_target_data(len_0, len_1):
 
 
 def preprocess_data(num_features):
-    data_path = 'parsedData/output'
-    files_0 = glob.glob(data_path + '/0/*.dat')
-    files_1 = glob.glob(data_path + '/1/*.dat')
+    files_0 = glob.glob(DATA_PATH + '/0/*.dat')
+    files_1 = glob.glob(DATA_PATH + '/1/*.dat')
 
     if len(files_0) != len(files_1):
         print('[WARNING]: Number of positive and negative files are not the same!')
@@ -60,8 +61,8 @@ def preprocess_data(num_features):
         d_0 = np.load(files[i])
         d_1 = np.load(files[i + 1])
 
-        d_0 = format_data(d_0, 250)
-        d_1 = format_data(d_1, 250)
+        d_0 = format_data(d_0, N_POINTS)
+        d_1 = format_data(d_1, N_POINTS)
 
         if (num_features == 2):
             d_0_gradient = compute_gradient(d_0)

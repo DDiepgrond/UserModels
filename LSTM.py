@@ -21,9 +21,16 @@ TODO
 
 """
 
+
+N_FEATURES = 2
+INPUT_SIZE = 200
+HIDDEN_UNITS = 100
+EPOCHS = 3
+BATCH_SIZE = 5
+
 def compile_model():
     model = Sequential()
-    model.add(LSTM(32, input_shape=(250, 1), activation='sigmoid'))
+    model.add(LSTM(HIDDEN_UNITS, input_shape=(INPUT_SIZE, N_FEATURES), activation='sigmoid'))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
@@ -44,13 +51,12 @@ def reshape_data(x):
 if __name__ == "__main__":
     model = compile_model()
 
-    num_features = 2
-    x_train, y_train = preprocess_data(num_features)
+    x_train, y_train = preprocess_data(N_FEATURES)
 
     x_train, y_train = shuffle_train_data(x_train, y_train)
     x_train = reshape_data(x_train)
 
-    model.fit(x_train, y_train, epochs=3, batch_size=5)
+    model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE)
 
     scores = model.evaluate(X_test, Y_test, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))
