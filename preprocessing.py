@@ -68,6 +68,9 @@ def preprocess_data(num_features):
             d_0_gradient = compute_gradient(d_0)
             d_1_gradient = compute_gradient(d_1)
 
+            d_0 = np.stack((d_0, d_0_gradient[0]), axis=-1)
+            d_1 = np.stack((d_1, d_1_gradient[0]), axis=-1)  
+
         X = merge_data(X, merge_data(d_0, d_1))
         Y = merge_data(Y, create_target_data(len(d_0), len(d_1)))
 

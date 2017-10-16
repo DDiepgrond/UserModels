@@ -45,7 +45,7 @@ def shuffle_train_data(x, y):
 
 
 def reshape_data(x):
-    return x.reshape((len(x), len(x[0]), 1))
+    return x.reshape((len(x), len(x[0]), N_FEATURES))
 
 
 if __name__ == "__main__":
