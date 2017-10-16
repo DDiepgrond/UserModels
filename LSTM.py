@@ -7,7 +7,7 @@ from numpy import array
 from numpy import zeros, newaxis
 import keras
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 from keras.layers import LSTM
 from keras.preprocessing import sequence
 
@@ -22,14 +22,17 @@ TODO
 """
 
 N_FEATURES = 2
-INPUT_SIZE = 5000
-HIDDEN_UNITS = 100
+INPUT_SIZE = 500
+HIDDEN_UNITS = 128
 EPOCHS = 3
 BATCH_SIZE = 5
 
 def compile_model():
     model = Sequential()
-    model.add(LSTM(HIDDEN_UNITS, input_shape=(INPUT_SIZE, N_FEATURES), activation='sigmoid'))
+    model.add(LSTM(HIDDEN_UNITS, input_shape=(INPUT_SIZE, N_FEATURES), return_sequences=True, activation='sigmoid'))
+    model.add(Dropout(0.2))    
+    model.add(LSTM(HIDDEN_UNITS))
+    model.add(Dropout(0.2))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
