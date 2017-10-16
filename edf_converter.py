@@ -5,12 +5,25 @@ import glob
 import numpy as np
 import cPickle
 
+DOWNSAMPLE_RATE = 10
+
 def is_important(line):
     match = ['start_selection_loop', 'correct', 'target', 'item', 'start_round', 'start_adaptation', 'end_adaptation','start_collection', 'end_collection','end_round', 'end_selection_loop']
     for m in match:
         if m in line:
             return True
     return False
+
+def downsampling(data):
+    # Downsampling of person data
+    new_person_data = []
+    # Loop through the selection loops of the person
+    for selection_loop in xrange(0, len(data)):
+        new_person_data.append([])
+        # Loop through the rounds in the selection loop
+        for round in xrange(0, len(selection_loop), 10):
+            new_person_data[selection_loop].append(np.median(selection_loop[round:round + 10]))
+    return new_person_data
 
 if __name__ == "__main__":
     if (len(sys.argv) != 3):
@@ -115,11 +128,14 @@ if __name__ == "__main__":
                     keep = False    
 
                 if is_msg:
-                    prev_msg = line       
+                    prev_msg = line
+
+        new_person_data_0 = downsampling(person_data_0)
+        new_person_data_1 = downsampling(person_data_1)
 
         with open(target_path + '/0/' + fp.replace('output/', '').replace('asc', 'dat'), 'w') as f:
-            np.save(f, person_data_0)
+            np.save(f, new_person_data_0)
         with open(target_path + '/1/' + fp.replace('output/', '').replace('asc', 'dat'), 'w') as f:
-            np.save(f, person_data_1)
+            np.save(f, new_person_data_1)
         os.remove(fp) #REMOVE ASC FILES 
     print('Parsing completed')
