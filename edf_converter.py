@@ -5,7 +5,7 @@ import glob
 import numpy as np
 import cPickle
 
-DOWNSAMPLE_RATE = 10
+DOWNSAMPLE_RATE = 775 / 10
 
 def is_important(line):
     match = ['start_selection_loop', 'correct', 'target', 'item', 'start_round', 'start_adaptation', 'end_adaptation','start_collection', 'end_collection','end_round', 'end_selection_loop']
@@ -18,11 +18,15 @@ def downsampling(data):
     # Downsampling of person data
     new_person_data = []
     # Loop through the selection loops of the person
-    for selection_loop in xrange(0, len(data)):
+    for s in xrange(len(data)):
         new_person_data.append([])
         # Loop through the rounds in the selection loop
-        for round in xrange(0, len(selection_loop), 10):
-            new_person_data[selection_loop].append(np.median(selection_loop[round:round + 10]))
+        for r in xrange(0, len(data[s])):
+            new_person_data[s].append([])
+            #print new_person_data
+            for d in xrange(0, len(data[s][r]), DOWNSAMPLE_RATE):
+                f_dat = [float(j) for j in data[s][r]]
+                new_person_data[s][r].append(str(np.nanmedian(f_dat[d:len(f_dat)]) if len(f_dat) < d + DOWNSAMPLE_RATE else np.nanmedian(f_dat[d:d + DOWNSAMPLE_RATE])))
     return new_person_data
 
 if __name__ == "__main__":
@@ -59,12 +63,13 @@ if __name__ == "__main__":
         selection_data = []
         round_data = []
         log_data = False
-        prev_msg = []
-        target = ''
+        #prev_msg = []
+        #target = ''
         brightness = ''
         correct = ''
-        keep = False
+        #keep = False
         max_value = 0
+        msg_log = []
 
         with open(fp) as f:
             for l in f:
@@ -83,11 +88,39 @@ if __name__ == "__main__":
                 is_msg = False
                 is_data = False
 
+                if 'start_selection_loop' in line:
+                    selection_data = []
+
+                if 'start_adaptation' in line:
+                    log_data = True
+
                 if 'MSG' in line and is_important(line):
                     is_msg = True
-                elif line[0].isdigit():# and float(line[3]) > 0: BLINKING REMOVE 100 MS AROUND MAYBE
+                elif line[0].isdigit():
                     is_data = True
+                
+                if log_data and is_data:
+                    round_data.append('{}'.format(str(round(float(line[3].replace('.0','')) / max_value * 100, 2)))) 
 
+                if 'end_collection' in line:
+                    log_data = False
+                    selection_data.append(round_data)
+                    round_data = []                
+
+                if 'status=winner' in line:
+                    brightness = '-1' if float(line[12].replace('x=', '')) < 0 else '1'
+                
+                if 'correct' in line:
+                    correct = line[4]
+                
+                if correct is '1':
+                    if (brightness is '-1'):
+                        person_data_0.append(selection_data)
+                    elif (brightness is '1'):
+                        person_data_1.append(selection_data) 
+                    correct = ''
+                    brightness = ''
+                '''
                 if 'start_selection_loop' in line:
                     selection_data = []
                     round_data = []
@@ -107,32 +140,40 @@ if __name__ == "__main__":
                 
                 if 'target' in line and 'start_selection_loop' in prev_msg:
                     target = line[4]
-                if 'status=init' in line and 'id="{}"'.format(target) in line:
-                    brightness = line[9].replace('brightness=', '')
+                if 'status=winner' in line:# and 'id="{}"'.format(target) in line:
+                    brightness = '-1' if float(line[12].replace('x=', '')) < 0 else '1'#line[9].replace('brightness=', '')
 
                 if 'correct' in line:
                     correct = line[4]
 
                 if correct == '1':
-                    keep = True            
-                    correct = ''        
+                    keep = True         
+
+                #print 'cor: {}\nkeep: {}\n bright: {}\ntarget: {}\n'.format(correct, keep, brightness, target)
 
                 if log_data and is_data:
-                    round_data.append('{}'.format(str(round(float(line[3].replace('.0','')) / max_value * 100, 2))))
+                    round_data.append('{}'.format(str(round(float(line[3].replace('.0','')) / max_value * 100, 2))))                
+                
 
                 if keep:
                     if (brightness == '1'):
                         person_data_1.append(selection_data)  
                     elif (brightness == '-1'):
-                        person_data_0.append(selection_data)  
+                        person_data_0.append(selection_data)         
+                    correct = ''   
                     keep = False    
-
                 if is_msg:
-                    prev_msg = line
+                    prev_msg = line'''
 
+        print 'Raw 0 | n_s {}, n_r {}, n_d {}, tot_sd {}'.format(len(person_data_0), len(person_data_0[0]), len(person_data_0[0][0]), len(person_data_0[0] * len(person_data_0[0][0])))
+        print 'Raw 0 | n_s {}, n_r {}, n_d {}, tot_sd {}'.format(len(person_data_1), len(person_data_1[0]), len(person_data_1[0][0]), len(person_data_1[0] * len(person_data_1[0][0])))
+        
         new_person_data_0 = downsampling(person_data_0)
         new_person_data_1 = downsampling(person_data_1)
 
+        print 'Downsampled 0 | n_s {}, n_r {}, n_d {}, tot_sd {}'.format(len(new_person_data_0), len(new_person_data_0[0]), len(new_person_data_0[0][0]), len(new_person_data_0[0] * len(new_person_data_0[0][0])))
+        print 'Downsampled 0 | n_s {}, n_r {}, n_d {}, tot_sd {}'.format(len(new_person_data_1), len(new_person_data_1[0]), len(new_person_data_1[0][0]), len(new_person_data_1[0] * len(new_person_data_1[0][0])))
+        
         with open(target_path + '/0/' + fp.replace('output/', '').replace('asc', 'dat'), 'w') as f:
             np.save(f, new_person_data_0)
         with open(target_path + '/1/' + fp.replace('output/', '').replace('asc', 'dat'), 'w') as f:

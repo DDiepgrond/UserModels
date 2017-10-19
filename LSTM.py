@@ -21,11 +21,11 @@ TODO
 
 """
 
-N_FEATURES = 2
-INPUT_SIZE = 500
+N_FEATURES = 1
+INPUT_SIZE = 50
 HIDDEN_UNITS = 128
-EPOCHS = 3
-BATCH_SIZE = 5
+EPOCHS = 5
+BATCH_SIZE = 10
 
 def compile_model():
     model = Sequential()
@@ -56,10 +56,15 @@ if __name__ == "__main__":
     x_train, y_train = preprocess_data(N_FEATURES, INPUT_SIZE)
 
     x_train, y_train = shuffle_train_data(x_train, y_train)
-    print(x_train.shape)
+    print 'Raw shape: {}'.format(x_train.shape)
     x_train = reshape_data(x_train)
+    print 'Reshaped shape: {}'.format(x_train.shape)
 
     model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE)
-
+    #loss_history = callback.history["loss"]
+    #acc_history = callback.history["accuracy"]
+    #numpy.savetxt("loss_history.txt", numpy.array(loss_history), delimiter=",")
+    #numpy.savetxt("acc_history.txt", numpy.array(acc_history), delimiter=",")
+    
     scores = model.evaluate(X_test, Y_test, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))

@@ -62,8 +62,8 @@ def preprocess_data(num_features, n_points):
         d_0 = format_data(d_0, n_points)
         d_1 = format_data(d_1, n_points)
         
-        #np.savetxt('0.csv', d_0[3], fmt='%1.2f')
-        #np.savetxt('1.csv', d_1[3], fmt='%1.2f')
+        #np.savetxt('0.csv', d_0[2], fmt='%1.2f')
+        #np.savetxt('1.csv', d_1[2], fmt='%1.2f')
         #sys.exit()
 
         if (num_features >= 2):
