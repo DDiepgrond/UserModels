@@ -24,15 +24,15 @@ TODO
 N_FEATURES = 1
 INPUT_SIZE = 50
 HIDDEN_UNITS = 128
-EPOCHS = 5
-BATCH_SIZE = 10
+EPOCHS = 50
+BATCH_SIZE = 5
 
 def compile_model():
     model = Sequential()
-    model.add(LSTM(HIDDEN_UNITS, input_shape=(INPUT_SIZE, N_FEATURES), return_sequences=True, activation='sigmoid'))
-    model.add(Dropout(0.2))    
-    model.add(LSTM(HIDDEN_UNITS))
-    model.add(Dropout(0.2))
+    model.add(LSTM(HIDDEN_UNITS, input_shape=(INPUT_SIZE, N_FEATURES), return_sequences=False, activation='sigmoid'))
+    #model.add(Dropout(0.2))    
+    #model.add(LSTM(HIDDEN_UNITS))
+    #model.add(Dropout(0.2))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     print 'Raw shape: {}'.format(x_train.shape)
     x_train = reshape_data(x_train)
     print 'Reshaped shape: {}'.format(x_train.shape)
-
+    
     model.fit(x_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE)
     #loss_history = callback.history["loss"]
     #acc_history = callback.history["accuracy"]
