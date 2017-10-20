@@ -50,7 +50,7 @@ if __name__ == "__main__":
         sys.exit(0)
     command_line = './edf2asc -r -y {} -p {}'.format(' '.join(file_paths), target_path)
     os.system(command_line)
-    
+    sys.exit()
     if not os.path.exists(target_path + '/0'):
         os.makedirs(target_path + '/0')
     if not os.path.exists(target_path + '/1'):
