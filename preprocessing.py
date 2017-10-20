@@ -54,6 +54,9 @@ def preprocess_data(num_features, n_points):
     X = np.array([])
     Y = np.array([])
 
+    plot_d0 = []
+    plot_y = []
+
     files = [val for pair in zip(files_0, files_1) for val in pair]
     for i in xrange(0, len(files), 2):
         d_0 = np.load(files[i])
@@ -61,44 +64,27 @@ def preprocess_data(num_features, n_points):
         
         d_0 = format_data(d_0, n_points)
         d_1 = format_data(d_1, n_points)
-        
-        #np.savetxt('0.csv', d_0[2], fmt='%1.2f')
-        #np.savetxt('1.csv', d_1[2], fmt='%1.2f')
-        #sys.exit()
 
+        d_0 = np.random.rand(len(d_0), n_points) * 2
+        d_1 = np.random.rand(len(d_1), n_points)
+        
+        '''
+        l = len(d_0) if len(d_0) < len(d_1) else len(d_1)
+        for i in xrange(l):
+            plot_d0 = merge_data(plot_d0, d_0[i])
+            plot_d0 = merge_data(plot_d0, [0] * 10)
+            plot_y = merge_data(plot_y, [0] * len(d_0[i]) + [0] * 10)
+            plot_d0 = merge_data(plot_d0, d_1[i])
+            plot_d0 = merge_data(plot_d0, [0] * 10)
+            plot_y = merge_data(plot_y, [1] * len(d_0[i]) + [0] * 10)
+        '''
         if (num_features >= 2):
             d_0_gradient = compute_gradient(d_0)
             d_1_gradient = compute_gradient(d_1)
-
             d_0 = np.stack((d_0, d_0_gradient[0]), axis=-1)
             d_1 = np.stack((d_1, d_1_gradient[0]), axis=-1)
         
-        # if (num_features >= 3):
-        #     d_0_gradient = compute_gradient(d_0)
-        #     d_1_gradient = compute_gradient(d_1)
-          
-        #     d_0_diff = np.diff(d_0)
-        #     d_1_diff = np.diff(d_1)
-            
-        #     d_0_diff_shaped = np.zeros((len(d_0_diff), N_POINTS))
-        #     for i in range(len(d_0_diff)):
-        #         d_0_diff_shaped[i] = np.insert(d_0_diff[i], 0, np.nan)
-
-        #     d_1_diff_shaped = np.zeros((len(d_1_diff), N_POINTS))
-        #     for i in range(len(d_1_diff)):
-        #         d_1_diff_shaped[i] = np.insert(d_1_diff[i], 0, np.nan)
-
-        #     print(len(d_0_gradient[0][0]))
-        #     d_0 = np.stack((d_0, d_0_gradient[0]), axis=-1)
-        #     d_1 = np.stack((d_1, d_1_gradient[0]), axis=-1)
-            
-        #     print(d_0[0])
-        #     print(d_0_diff_shaped[0])
-           
-        #     d_0 = np.stack((d_0, d_0_diff_shaped), axis=-1)
-        #     d_1 = np.stack((d_1, d_1_diff_shaped), axis=-1)
-
         X = merge_data(X, merge_data(d_0, d_1))
         Y = merge_data(Y, create_target_data(len(d_0), len(d_1)))
-
+    
     return (X, Y)
