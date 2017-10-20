@@ -60,6 +60,24 @@ if __name__ == "__main__":
         os.makedirs(target_path + '/1')
 
     file_paths = glob.glob(target_path + '/*.asc')
+    
+    print 'Finding min and max values!'
+    max_value = 0
+    min_value = 9999
+    for fp in file_paths:
+        with open(fp) as f:
+            for l in f:
+                line = l.rstrip('\n').split()
+                if len(line) == 0:
+                    continue
+                if line[0].isdigit():
+                    if float(line[3]) > max_value:
+                        max_value = float(line[3])
+                    if float(line[3]) > 0 and float(line[3]) < min_value:
+                        min_value = float(line[3])
+    print min_value
+    print max_value
+    print 'Converting...'
     for fp in file_paths:
         person_data_0 = []
         person_data_1 = []
@@ -71,16 +89,7 @@ if __name__ == "__main__":
         brightness = ''
         correct = ''
         #keep = False
-        max_value = 0
         msg_log = []
-
-        with open(fp) as f:
-            for l in f:
-                line = l.rstrip('\n').split()
-                if len(line) == 0:
-                    continue
-                if line[0].isdigit() and float(line[3]) > max_value:
-                    max_value = float(line[3])
 
         with open(fp) as f:
             for l in f:
@@ -103,7 +112,9 @@ if __name__ == "__main__":
                     is_data = True
                 
                 if log_data and is_data:
-                    round_data.append('{}'.format(str(round(float(line[3].replace('.0','')) / max_value * 100, 2)))) 
+                    x = float(line[3].replace('.0',''))
+                    value = round((x - min_value) / (max_value - min_value), 4)
+                    round_data.append('{}'.format(str(value))) 
 
                 if 'end_collection' in line:
                     log_data = False
@@ -181,5 +192,5 @@ if __name__ == "__main__":
             np.save(f, new_person_data_0)
         with open(target_path + '/1/' + fp.replace('output/', '').replace('asc', 'dat'), 'w') as f:
             np.save(f, new_person_data_1)
-        os.remove(fp) #REMOVE ASC FILES 
+        #os.remove(fp) #REMOVE ASC FILES 
     print('Parsing completed')
