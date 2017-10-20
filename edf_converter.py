@@ -30,27 +30,30 @@ def downsampling(data):
     return new_person_data
 
 if __name__ == "__main__":
-    if (len(sys.argv) != 3):
+    #if (len(sys.argv) != 3):
+    if (len(sys.argv) != 2):
         print('[WARNING]: Invalid usages!')
-        print('Usage: python edf_converter.py [folder/containing/edfs] [folder/for/output]')
+        #print('Usage: python edf_converter.py [folder/containing/edfs] [folder/for/output]')
+        print('Usage: python edf_converter.py [folder/for/output]')
         print('      *no brackets')
         sys.exit(0)
 
-    path = str(sys.argv[1])
-    target_path = str(sys.argv[2])
+    #path = str(sys.argv[1])
+    #target_path = str(sys.argv[2])
+    target_path = str(sys.argv[1])
     
-    if (not os.path.isdir(path)):
-        print('[WARNING]: Path is invalid!')        
-        sys.exit(0)
+    #if (not os.path.isdir(path)):
+        #print('[WARNING]: Path is invalid!')        
+        #sys.exit(0)
     
-    file_paths = glob.glob(path + '/*.edf')
+    '''file_paths = glob.glob(path + '/*.edf')
 
     if (file_paths.count == 0):
         print('[WARNING]: Folder does not contain any .edf files!')        
         sys.exit(0)
     command_line = './edf2asc -r -y {} -p {}'.format(' '.join(file_paths), target_path)
     os.system(command_line)
-    sys.exit()
+    sys.exit()'''
     if not os.path.exists(target_path + '/0'):
         os.makedirs(target_path + '/0')
     if not os.path.exists(target_path + '/1'):
