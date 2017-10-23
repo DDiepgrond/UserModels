@@ -114,7 +114,7 @@ if __name__ == "__main__":
                     brightness = ''
                     correct = ''
 
-                if 'start_collection' in line:
+                if 'start_adaptation' in line:
                     log_data = True
 
                 if 'target' in line:
@@ -172,9 +172,9 @@ if __name__ == "__main__":
         #print 'Downsampled 0 | n_s {}, n_r {}, n_d {}, tot_sd {}'.format(len(new_person_data_0), len(new_person_data_0[0]), len(new_person_data_0[0][0]), len(new_person_data_0[0] * len(new_person_data_0[0][0])))
         #print 'Downsampled 0 | n_s {}, n_r {}, n_d {}, tot_sd {}'.format(len(new_person_data_1), len(new_person_data_1[0]), len(new_person_data_1[0][0]), len(new_person_data_1[0] * len(new_person_data_1[0][0])))
         
-        with open(target_path + '\\0\\' + fp.replace('output\\', '').replace('asc', 'dat'), 'wb') as f:
+        with open(target_path + '/0/' + fp.replace('output/', '').replace('asc', 'dat'), 'wb') as f:
             np.save(f, new_person_data_0)
-        with open(target_path + '\\1\\' + fp.replace('output\\', '').replace('asc', 'dat'), 'wb') as f:
+        with open(target_path + '/1/' + fp.replace('output/', '').replace('asc', 'dat'), 'wb') as f:
             np.save(f, new_person_data_1)
         #os.remove(fp) #REMOVE ASC FILES 
     print('Parsing completed')
