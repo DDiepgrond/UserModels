@@ -1,0 +1,131 @@
+All
+min dilation: 104.0
+max dilation: 12479.0
+mean dilation: 2099.83222826
+n selections: 1488
+n wins: 1300 (87.3655913978)
+n loss: 188 (12.6344086022)
+min rounds: 2
+max rounds: 96
+mean rounds: 10
+n rounds: 15113
+------------------------------------
+PP2
+min dilation: 118.0
+max dilation: 2839.0
+mean dilation: 1113.64343383
+n selections: 112
+n wins: 105 (93.75)
+n loss: 7 (6.25)
+min rounds: 2
+max rounds: 23
+mean rounds: 6
+n rounds: 741
+------------------------------------
+PP3
+min dilation: 133.0
+max dilation: 4532.0
+mean dilation: 1661.91917674
+n selections: 192
+n wins: 176 (91.6666666667)
+n loss: 16 (8.33333333333)
+min rounds: 3
+max rounds: 51
+mean rounds: 9
+n rounds: 1861
+------------------------------------
+PP4
+min dilation: 121.0
+max dilation: 6141.0
+mean dilation: 2003.18222732
+n selections: 208
+n wins: 180 (86.5384615385)
+n loss: 28 (13.4615384615)
+min rounds: 3
+max rounds: 49
+mean rounds: 8
+n rounds: 1787
+------------------------------------
+PP6
+min dilation: 123.0
+max dilation: 4575.0
+mean dilation: 1825.18235716
+n selections: 208
+n wins: 162 (77.8846153846)
+n loss: 46 (22.1153846154)
+min rounds: 2
+max rounds: 36
+mean rounds: 9
+n rounds: 1982
+------------------------------------
+PP7
+min dilation: 105.0
+max dilation: 4652.0
+mean dilation: 1848.45973352
+n selections: 112
+n wins: 96 (85.7142857143)
+n loss: 16 (14.2857142857)
+min rounds: 2
+max rounds: 33
+mean rounds: 5
+n rounds: 634
+------------------------------------
+PP8
+min dilation: 104.0
+max dilation: 12479.0
+mean dilation: 2921.63712191
+n selections: 192
+n wins: 134 (69.7916666667)
+n loss: 58 (30.2083333333)
+min rounds: 3
+max rounds: 96
+mean rounds: 20
+n rounds: 3882
+------------------------------------
+PP9
+min dilation: 157.0
+max dilation: 9327.0
+mean dilation: 2567.29418864
+n selections: 112
+n wins: 107 (95.5357142857)
+n loss: 5 (4.46428571429)
+min rounds: 3
+max rounds: 51
+mean rounds: 12
+n rounds: 1365
+------------------------------------
+PP10
+min dilation: 1116.0
+max dilation: 6035.0
+mean dilation: 2464.5361055
+n selections: 112
+n wins: 110 (98.2142857143)
+n loss: 2 (1.78571428571)
+min rounds: 2
+max rounds: 48
+mean rounds: 6
+n rounds: 775
+------------------------------------
+PP11
+min dilation: 1031.0
+max dilation: 4133.0
+mean dilation: 1788.31188723
+n selections: 128
+n wins: 125 (97.65625)
+n loss: 3 (2.34375)
+min rounds: 3
+max rounds: 17
+mean rounds: 6
+n rounds: 830
+------------------------------------
+PP12
+min dilation: 209.0
+max dilation: 3957.0
+mean dilation: 1467.9599012
+n selections: 112
+n wins: 105 (93.75)
+n loss: 7 (6.25)
+min rounds: 2
+max rounds: 75
+mean rounds: 11
+n rounds: 1256
